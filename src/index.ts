@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-// importacion rutas
+// Importación rutas
 import pruebaRouter from './routes/prueba.route'
 
 dotenv.config();
@@ -18,12 +18,12 @@ app.use(express.urlencoded({ extended: true }));
 //rutas
 app.use('/prueba', pruebaRouter);
 
-//Servidor Raiz.
+//Aqui esta el servidor Raiz.
 app.get('/', (req: Request, res: Response) => {
-    res.send('Root server is on yei :3 lol ');
+    res.send('Servidor funcionando ');
 });
 
-//Mensaje de consola que dice que funciona.
+//Mensaje de consola para saber que el servidor funciona.
 app.listen(port, () => {
-    console.log(`Servidor corriendo en el puerto: ${port} :p`);
+    console.log(`Servidor corriendo en el puerto: ${port}`);
 });

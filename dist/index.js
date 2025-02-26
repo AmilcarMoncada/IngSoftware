@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
-// importacion rutas
+// Importación rutas
 const prueba_route_1 = __importDefault(require("./routes/prueba.route"));
 dotenv_1.default.config();
 require('dotenv').config();
@@ -17,11 +17,11 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 //rutas
 app.use('/prueba', prueba_route_1.default);
-//Servidor Raiz.
+//Aqui esta el servidor Raiz.
 app.get('/', (req, res) => {
-    res.send('Root server is on yei :3 lol ');
+    res.send('Servidor funcionando ');
 });
-//Mensaje de consola que dice que funciona.
+//Mensaje de consola para saber que el servidor funciona.
 app.listen(port, () => {
-    console.log(`Servidor corriendo en el puerto: ${port} :p`);
+    console.log(`Servidor corriendo en el puerto: ${port}`);
 });

@@ -20,7 +20,7 @@ const funcionprueba = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         console.log('error con fetch ', error);
-        res.status(500).json({ message: 'algo paso mal :(', error });
+        res.status(500).json({ message: 'algo paso mal', error });
     }
 });
 exports.funcionprueba = funcionprueba;
