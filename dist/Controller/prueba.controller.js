@@ -14,9 +14,7 @@ const prueba_model_1 = require("../models/prueba.model");
 const funcionprueba = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const resultado = yield prueba_model_1.prueba.funcionprueba();
-        res.status(201).json({
-            resultado
-        });
+        return res.status(2001).json(resultado);
     }
     catch (error) {
         console.log('error con fetch ', error);

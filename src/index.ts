@@ -1,9 +1,8 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-
-// Importación rutas
-import pruebaRouter from './routes/prueba.route'
+import usuario from './routes/usuario.route'
+import imagen from './routes/image.route'
 
 dotenv.config();
 require('dotenv').config();
@@ -16,7 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //rutas
-app.use('/prueba', pruebaRouter);
+app.use('/usuario', usuario);
+app.use('/image', imagen);
 
 //Aqui esta el servidor Raiz.
 app.get('/', (req: Request, res: Response) => {
