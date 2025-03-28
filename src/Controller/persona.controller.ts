@@ -1,10 +1,10 @@
-import { usuario } from '../models/usuario.model'
+import { persona } from '../models/persona.model'
 import { Request, Response } from 'express'
 import validator from 'email-validator';
 
 
 
-export const registrarusuario = async (req: Request, res: Response): Promise<any> => {
+export const registrarPersona = async (req: Request, res: Response): Promise<any> => {
 
     const { nombres, apellidos, foto, correo, dni} = req.body;
 
@@ -19,7 +19,7 @@ export const registrarusuario = async (req: Request, res: Response): Promise<any
     }
 
     try {
-    const resultado = await usuario.registrarusuario( nombres, apellidos, foto, correo, dni);
+    const resultado = await persona.registrarPersona( nombres, apellidos, foto, correo, dni);
       res.status(200).json(resultado);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -36,7 +36,7 @@ export const registrarusuario = async (req: Request, res: Response): Promise<any
 
 export const obtenerCarreras = async (req: Request, res: Response): Promise<any>=> {
     try {
-        const carreras = await usuario.obtenercarreras();
+        const carreras = await persona.obtenercarreras();
         res.status(200).json(carreras);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -49,7 +49,7 @@ export const obtenerCarreras = async (req: Request, res: Response): Promise<any>
 
 export const obtenerCentrosRegionales = async (req: Request, res: Response): Promise<any>=> {
     try {
-        const centros = await usuario.obtenercentrosregionales();
+        const centros = await persona.obtenercentrosregionales();
         res.status(200).json(centros);
     } catch (error: unknown) {
       if (error instanceof Error) {

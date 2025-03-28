@@ -1,8 +1,8 @@
 import supabase from "../utils/connection";
 
-export class usuario {
+export class persona {
 
-static async registrarusuario( nombres: string, apellidos: string, foto: string, correo: string, dni: string) {
+static async registrarPersona( nombres: string, apellidos: string, foto: string, correo: string, dni: string) {
   try {
     const { data: duplicados, error: errorDuplicados } = await supabase.rpc('p_verificar_duplicados', {
       p_correo: correo,
