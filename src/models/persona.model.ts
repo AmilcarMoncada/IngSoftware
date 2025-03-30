@@ -2,7 +2,7 @@ import supabase from "../utils/connection";
 
 export class persona {
 
-static async registrarPersona( nombres: string, apellidos: string, foto: string, correo: string, dni: string) {
+static async registrarPersona( nombres: string, apellidos: string, foto: string, correo: string, dni: string, descriptor_facial: string) {
   try {
     const { data: duplicados, error: errorDuplicados } = await supabase.rpc('p_verificar_duplicados', {
       p_correo: correo,
@@ -14,7 +14,7 @@ static async registrarPersona( nombres: string, apellidos: string, foto: string,
       throw new Error('Error al verificar duplicados.');
     }
 
-    if (duplicados && duplicados.length > 0) {
+    if (Array.isArray(duplicados) && duplicados.length > 0) {
       const duplicado = duplicados[0];
       throw new Error(`El campo '${duplicado.campo_duplicado}' con el valor '${duplicado.valor}' ya está en uso.`);
     }
@@ -24,7 +24,8 @@ static async registrarPersona( nombres: string, apellidos: string, foto: string,
       p_apellidos: apellidos,
       p_foto: foto,
       p_correo: correo,
-      p_dni: dni
+      p_dni: dni,
+      p_descriptor_facial: descriptor_facial
     });
 
     if (PersonaError) {

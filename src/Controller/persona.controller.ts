@@ -6,9 +6,9 @@ import validator from 'email-validator';
 
 export const registrarPersona = async (req: Request, res: Response): Promise<any> => {
 
-    const { nombres, apellidos, foto, correo, dni} = req.body;
+    const { nombres, apellidos, foto, correo, dni, descriptor_facial} = req.body;
 
-    if (!nombres || !apellidos || !dni || !correo) {
+    if (!nombres || !apellidos || !dni || !correo || !descriptor_facial) {
       res.status(400).json({ message: 'Faltan datos requeridos en la solicitud' });
       return;
     }
@@ -19,7 +19,7 @@ export const registrarPersona = async (req: Request, res: Response): Promise<any
     }
 
     try {
-    const resultado = await persona.registrarPersona( nombres, apellidos, foto, correo, dni);
+    const resultado = await persona.registrarPersona( nombres, apellidos, foto, correo, dni, descriptor_facial);
       res.status(200).json(resultado);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -27,9 +27,7 @@ export const registrarPersona = async (req: Request, res: Response): Promise<any
       }
     }
   };
-
-
-
+  
 
 
 

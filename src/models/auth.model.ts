@@ -16,7 +16,7 @@ export class login{
         }
       
         //console.log(data.session.access_token);
-        return data.session;
+        return data;
         //return res.json({ token: data.session?.access_token });
       }
 

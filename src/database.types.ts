@@ -245,6 +245,7 @@ export type Database = {
         Row: {
           apellidos: string | null
           correo: string | null
+          descriptor_facial: Json | null
           dni: string | null
           fotografia: string | null
           id_persona: number
@@ -253,6 +254,7 @@ export type Database = {
         Insert: {
           apellidos?: string | null
           correo?: string | null
+          descriptor_facial?: Json | null
           dni?: string | null
           fotografia?: string | null
           id_persona?: number
@@ -261,6 +263,7 @@ export type Database = {
         Update: {
           apellidos?: string | null
           correo?: string | null
+          descriptor_facial?: Json | null
           dni?: string | null
           fotografia?: string | null
           id_persona?: number
@@ -431,6 +434,7 @@ export type Database = {
           p_foto: string
           p_correo: string
           p_dni: string
+          p_descriptor_facial: Json
         }
         Returns: {
           id_persona: number
@@ -439,6 +443,7 @@ export type Database = {
           foto: string
           correo: string
           dni: string
+          descriptor_facial: Json
         }[]
       }
       p_obtener_roles: {
