@@ -19,7 +19,7 @@ export const registrarPersona = async (req: Request, res: Response): Promise<any
     }
 
     try {
-    const resultado = await persona.registrarPersona( nombres, apellidos, foto, correo, dni, descriptor_facial);
+    const resultado = await persona.registrarpersona( nombres, apellidos, foto, correo, dni, descriptor_facial);
       res.status(200).json(resultado);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -29,7 +29,16 @@ export const registrarPersona = async (req: Request, res: Response): Promise<any
   };
   
 
-
+  export const obtenerPersonas = async (req: Request, res: Response): Promise<any>=> {
+    try {
+        const carreras = await persona.obtenerpersonas();
+        res.status(200).json(carreras);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          res.status(500).json({ message: error.message });
+        }
+      }
+  };
 
 
 export const obtenerCarreras = async (req: Request, res: Response): Promise<any>=> {

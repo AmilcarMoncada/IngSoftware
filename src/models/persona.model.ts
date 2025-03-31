@@ -2,7 +2,7 @@ import supabase from "../utils/connection";
 
 export class persona {
 
-static async registrarPersona( nombres: string, apellidos: string, foto: string, correo: string, dni: string, descriptor_facial: string) {
+static async registrarpersona( nombres: string, apellidos: string, foto: string, correo: string, dni: string, descriptor_facial: string) {
   try {
     const { data: duplicados, error: errorDuplicados } = await supabase.rpc('p_verificar_duplicados', {
       p_correo: correo,
@@ -40,6 +40,15 @@ static async registrarPersona( nombres: string, apellidos: string, foto: string,
       throw new Error('Error al realizar la operación en la base de datos.');
     }
   }
+
+static async obtenerpersonas(){
+  const {data, error} = await supabase.rpc('p_obtener_personas');
+  if (error) {
+    console.error('Error al obtener las personas:', error);
+    throw new Error('Error al obtener las personas');
+  }
+  return data;
+}
 
 static async obtenercarreras() {
     const { data, error } = await supabase.rpc('p_carreras');

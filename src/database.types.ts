@@ -446,6 +446,16 @@ export type Database = {
           descriptor_facial: Json
         }[]
       }
+      p_obtener_personas: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          dni: string
+          nombres: string
+          apellidos: string
+          descriptor_facial: Json
+          fotografia: string
+        }[]
+      }
       p_obtener_roles: {
         Args: Record<PropertyKey, never>
         Returns: {
