@@ -60,5 +60,18 @@ static async obtenercentrosregionales() {
     return data;
   }
 
-  
+
+  static async eliminarPersona(idPersona: number){
+    const {data, error} = await supabase.rpc('p_eliminar_persona',{
+        p_id_usuario: idPersona
+    });
+    if (error) {
+      console.error('Error al eliminar persona:', error);
+      throw new Error('Error al eliminar persona.');
+  }
+    return data;
+}
+
+
+
 }

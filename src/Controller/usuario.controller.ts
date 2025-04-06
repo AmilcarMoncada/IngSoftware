@@ -4,7 +4,7 @@ import validator from 'email-validator';
 
 
 
-export const registrarusuario = async (req: Request, res: Response): Promise<any> => {
+export const registrarusuario = async (req: Request, res: Response) => {
 
     const { nombres, apellidos, foto, correo, dni} = req.body;
 
@@ -30,11 +30,7 @@ export const registrarusuario = async (req: Request, res: Response): Promise<any
 
 
 
-
-
-
-
-export const obtenerCarreras = async (req: Request, res: Response): Promise<any>=> {
+export const obtenerCarreras = async (req: Request, res: Response)=> {
     try {
         const carreras = await usuario.obtenercarreras();
         res.status(200).json(carreras);
@@ -47,7 +43,7 @@ export const obtenerCarreras = async (req: Request, res: Response): Promise<any>
 
 
 
-export const obtenerCentrosRegionales = async (req: Request, res: Response): Promise<any>=> {
+export const obtenerCentrosRegionales = async (req: Request, res: Response)=> {
     try {
         const centros = await usuario.obtenercentrosregionales();
         res.status(200).json(centros);
@@ -57,3 +53,18 @@ export const obtenerCentrosRegionales = async (req: Request, res: Response): Pro
       }
     }
   };
+
+
+export const eliminarPersona = async (req: Request, res: Response) => {
+    try {
+        const { idPersona } = req.params;
+        
+        const eliminar = await usuario.eliminarPersona(Number(idPersona));
+        
+        res.status(201).json({eliminar});
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(500).json({ message: error.message });
+      }
+    }
+}

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.obtenerCentrosRegionales = exports.obtenerCarreras = exports.registrarusuario = void 0;
+exports.eliminarPersona = exports.obtenerCentrosRegionales = exports.obtenerCarreras = exports.registrarusuario = void 0;
 const usuario_model_1 = require("../models/usuario.model");
 const email_validator_1 = __importDefault(require("email-validator"));
 const registrarusuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -60,3 +60,16 @@ const obtenerCentrosRegionales = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.obtenerCentrosRegionales = obtenerCentrosRegionales;
+const eliminarPersona = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { idPersona } = req.params;
+        const eliminar = yield usuario_model_1.usuario.eliminarPersona(Number(idPersona));
+        res.status(201).json({ eliminar });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+});
+exports.eliminarPersona = eliminarPersona;

@@ -70,5 +70,17 @@ class usuario {
             return data;
         });
     }
+    static eliminarPersona(idPersona) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data, error } = yield connection_1.default.rpc('p_eliminar_persona', {
+                p_id_usuario: idPersona
+            });
+            if (error) {
+                console.error('Error al eliminar persona:', error);
+                throw new Error('Error al eliminar persona.');
+            }
+            return data;
+        });
+    }
 }
 exports.usuario = usuario;
