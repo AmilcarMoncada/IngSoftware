@@ -1,8 +1,9 @@
+import { Json } from "../database.types";
 import supabase from "../utils/connection";
 
 export class persona {
 
-static async registrarpersona( nombres: string, apellidos: string, foto: string, correo: string, dni: string, descriptor_facial: string) {
+static async registrarpersona( nombres: string, apellidos: string, foto: string, correo: string, dni: string, descriptor_facial: number[]) {
   try {
     const { data: duplicados, error: errorDuplicados } = await supabase.rpc('p_verificar_duplicados', {
       p_correo: correo,
