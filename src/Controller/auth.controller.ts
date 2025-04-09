@@ -2,7 +2,7 @@ import { login } from "../models/auth.model";
 import {Request, Response} from 'express';
 import validator from "email-validator";
 
-export const hacerLogin = async (req: Request, res: Response): Promise<any> => {
+export const iniciarSesion = async (req: Request, res: Response): Promise<any> => {
     //console.log("Estoy aqui")
     const {correo, password} = req.body;
     
@@ -17,7 +17,7 @@ export const hacerLogin = async (req: Request, res: Response): Promise<any> => {
     }
 
     try {
-        const resultado = await login.loginUsuario(correo, password);
+        const resultado = await login.iniciarsesion(correo, password);
         res.status(200).json(resultado);
         return resultado;
     } catch (error: unknown){
@@ -28,9 +28,9 @@ export const hacerLogin = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
-export const verSesion = async (req: Request, res: Response): Promise<any> => {
+export const verificarSesion = async (req: Request, res: Response): Promise<any> => {
     try {
-        const resultado = await login.verificarSesion();
+        const resultado = await login.verificarsesion();
         res.status(200).json(resultado);
     } catch (error) {
         console.error('Error verificando sesión:', error);
@@ -41,10 +41,39 @@ export const verSesion = async (req: Request, res: Response): Promise<any> => {
 
 export const cerrarSesion = async (req: Request, res: Response): Promise<any> => {
     try {
-        const resultado = await login.cerrarSesion();
+        const resultado = await login.cerrarsesion();
         res.status(200).json(resultado);
     } catch (error) {
         console.error("Error en cerrarSesion:", error);
         res.status(500).json({ success: false, message: "Error inesperado" });
     }
 };
+
+export const registrarUsuario = async (req: Request, res: Response): Promise<any> => {
+
+    const { identidad, nombre, apellidos, rol, email, password} = req.body;
+
+    
+
+    
+    if (!nombre || !apellidos || !email || !identidad) {
+      res.status(400).json({ message: 'Faltan datos requeridos en la solicitud' });
+      return;
+    }
+
+    if (!validator.validate(email)) {
+      res.status(400).json({ message: 'Correo electrónico inválido.' });
+      return;
+    }
+    
+
+    try {
+        console.log("Entro hasta el try");
+    const resultado = await login.registrarusuario( identidad, nombre, apellidos, rol, email, password);
+      res.status(200).json(resultado);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(500).json({ message: error.message });
+      }
+    }
+  };

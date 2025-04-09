@@ -45,8 +45,8 @@ static async registrarpersona( nombres: string, apellidos: string, foto: string,
 static async obtenerpersonas(){
   const {data, error} = await supabase.rpc('p_obtener_personas');
   if (error) {
-    console.error('Error al obtener las personas:', error);
-    throw new Error('Error al obtener las personas');
+    console.error('Error al obtener las personas para comparar:', error);
+    throw new Error('Error al obtener las personas para comparar');
   }
   return data;
 }
@@ -71,5 +71,12 @@ static async obtenercentrosregionales() {
     return data;
   }
 
-  
+  static async obtenermotivosvisita() {
+    const { data, error } = await supabase.rpc('p_motivos');
+    if (error) {
+        console.error('Error al obtener los motivos de visita:', error);
+        throw new Error('Error al obtener los motivos de visita');
+    }
+    return data;
+  }
 }

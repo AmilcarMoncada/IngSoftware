@@ -2,7 +2,7 @@ import supabase from "../utils/connection";
 
 export class login{
 
-    static async loginUsuario(email: string, password: string) {
+    static async iniciarsesion(email: string, password: string) {
       
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
@@ -20,7 +20,7 @@ export class login{
         //return res.json({ token: data.session?.access_token });
       }
 
-      static async verificarSesion() {
+      static async verificarsesion() {
           // Obtener la sesión actual
           const { data, error } = await supabase.auth.getSession();
       
@@ -38,7 +38,7 @@ export class login{
           }
       }
       
-      static async cerrarSesion() {
+      static async cerrarsesion() {
         const { error } = await supabase.auth.signOut();
         
         if (error) {
@@ -49,4 +49,28 @@ export class login{
         return { success: true, message: "Sesión cerrada correctamente" };
     }
     
+
+    static async registrarusuario( identidad: string, nombres: string, apellidos: string, rol: number, email: string, password: string) {
+
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: { identidad, nombres, apellidos, rol }
+                }
+            });
+      
+          if (error) {
+            console.error('Error al insertar un nuevo usuario:', error);
+            throw new Error('Error al insertar un nuevo usuario');
+          }
+      
+            return data;
+          } catch (dbError) {
+            const error = dbError as Error;
+            console.error('Error de la base de datos:', dbError);
+            throw new Error('Error al realizar la operación en la base de datos.');
+          }
+        }
 }

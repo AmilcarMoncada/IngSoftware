@@ -64,3 +64,14 @@ export const obtenerCentrosRegionales = async (req: Request, res: Response): Pro
       }
     }
   };
+
+  export const obtenerMotivosVisita = async (req: Request, res: Response): Promise<any>=> {
+    try {
+        const centros = await persona.obtenermotivosvisita();
+        res.status(200).json(centros);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(500).json({ message: error.message });
+      }
+    }
+  };

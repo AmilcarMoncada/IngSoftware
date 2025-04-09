@@ -1,11 +1,12 @@
 import express from 'express';
-import { hacerLogin, verSesion, cerrarSesion } from '../Controller/auth.controller';
+import { iniciarSesion, verificarSesion, cerrarSesion, registrarUsuario } from '../Controller/auth.controller';
 
 const router = express.Router();
 
-router.post('/login', hacerLogin);
-router.get('/verificarLogin', verSesion);
+router.post('/login', iniciarSesion);
+router.get('/verificarLogin', verificarSesion);
 router.post('/logout', cerrarSesion);
+router.post('/signup', registrarUsuario);
 
 
 export default router;
