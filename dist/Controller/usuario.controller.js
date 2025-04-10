@@ -8,34 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.eliminarPersona = exports.obtenerCentrosRegionales = exports.obtenerCarreras = exports.registrarusuario = void 0;
+exports.eliminarPersona = exports.obtenerCentrosRegionales = exports.obtenerCarreras = void 0;
 const usuario_model_1 = require("../models/usuario.model");
-const email_validator_1 = __importDefault(require("email-validator"));
-const registrarusuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombres, apellidos, foto, correo, dni } = req.body;
-    if (!nombres || !apellidos || !dni || !correo) {
-        res.status(400).json({ message: 'Faltan datos requeridos en la solicitud' });
-        return;
-    }
-    if (!email_validator_1.default.validate(correo)) {
-        res.status(400).json({ message: 'Correo electrónico inválido.' });
-        return;
-    }
-    try {
-        const resultado = yield usuario_model_1.usuario.registrarusuario(nombres, apellidos, foto, correo, dni);
-        res.status(200).json(resultado);
-    }
-    catch (error) {
-        if (error instanceof Error) {
-            res.status(500).json({ message: error.message });
-        }
-    }
-});
-exports.registrarusuario = registrarusuario;
 const obtenerCarreras = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const carreras = yield usuario_model_1.usuario.obtenercarreras();

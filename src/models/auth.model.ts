@@ -49,28 +49,47 @@ export class login{
         return { success: true, message: "Sesión cerrada correctamente" };
     }
     
+    static async registrarusuario(identidad: string, nombres: string, apellidos: string, rol: number, email: string, password: string) {
 
-    static async registrarusuario( identidad: string, nombres: string, apellidos: string, rol: number, email: string, password: string) {
-
-        try {
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    data: { identidad, nombres, apellidos, rol }
-                }
-            });
-      
+      try {
+          // 1. Registrar al usuario en Supabase
+          const { data, error } = await supabase.auth.signUp({
+              email,
+              password,
+              options: {
+                  data: { identidad, nombres, apellidos, rol }
+              }
+          });
+          
           if (error) {
-            console.error('Error al insertar un nuevo usuario:', error);
-            throw new Error('Error al insertar un nuevo usuario');
+              console.error('Error al insertar un nuevo usuario:', error);
+              throw new Error('Error al insertar un nuevo usuario');
           }
-      
-            return data;
-          } catch (dbError) {
-            const error = dbError as Error;
-            console.error('Error de la base de datos:', dbError);
-            throw new Error('Error al realizar la operación en la base de datos.');
+  
+          // Obtener el UID del usuario recién registrado
+          const uid = data.user?.id;
+  
+          if (!uid) {
+              console.error('Error: UID no encontrado');
+              throw new Error('UID no encontrado');
           }
-        }
+  
+          // 2. Si el registro es exitoso, llamar a la función RPC `handle_user_signup_ext` pasando el UID
+          const { error: rpcError } = await supabase.rpc('handle_user_signup_ext', { uid });
+  
+          if (rpcError) {
+              console.error('Error al ejecutar handle_user_signup_ext:', rpcError);
+              throw new Error('Error al ejecutar handle_user_signup_ext');
+          }
+  
+          // 3. Si todo está bien, devolver los datos del usuario
+          return data;
+  
+      } catch (dbError) {
+          console.error('Error de la base de datos:', dbError);
+          throw new Error('Error al realizar la operación en la base de datos.');
+      }
+  }  
+  
+
 }

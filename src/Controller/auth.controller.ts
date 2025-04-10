@@ -1,6 +1,7 @@
 import { login } from "../models/auth.model";
 import {Request, Response} from 'express';
 import validator from "email-validator";
+import supabase from "../utils/connection";
 
 export const iniciarSesion = async (req: Request, res: Response): Promise<any> => {
     //console.log("Estoy aqui")
@@ -50,30 +51,26 @@ export const cerrarSesion = async (req: Request, res: Response): Promise<any> =>
 };
 
 export const registrarUsuario = async (req: Request, res: Response): Promise<any> => {
+  const { identidad, nombre, apellidos, rol, email, password } = req.body;
 
-    const { identidad, nombre, apellidos, rol, email, password} = req.body;
+  if (!nombre || !apellidos || !email || !identidad) {
+    return res.status(400).json({ message: 'Faltan datos requeridos en la solicitud' });
+  }
 
-    
+  if (!validator.validate(email)) {
+    return res.status(400).json({ message: 'Correo electrónico inválido.' });
+  }
 
-    
-    if (!nombre || !apellidos || !email || !identidad) {
-      res.status(400).json({ message: 'Faltan datos requeridos en la solicitud' });
-      return;
+  try {
+    console.log("Entró al try");
+
+    const resultado = await login.registrarusuario( identidad, nombre, apellidos, rol, email, password );
+
+    return res.status(200).json(resultado);
+
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
     }
-
-    if (!validator.validate(email)) {
-      res.status(400).json({ message: 'Correo electrónico inválido.' });
-      return;
-    }
-    
-
-    try {
-        console.log("Entro hasta el try");
-    const resultado = await login.registrarusuario( identidad, nombre, apellidos, rol, email, password);
-      res.status(200).json(resultado);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        res.status(500).json({ message: error.message });
-      }
-    }
-  };
+  }
+};

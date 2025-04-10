@@ -1,4 +1,3 @@
-import { Json } from "../database.types";
 import supabase from "../utils/connection";
 
 export class persona {
@@ -71,7 +70,6 @@ static async obtenercentrosregionales() {
     return data;
   }
 
-<<<<<<< HEAD:src/models/usuario.model.ts
 
   static async eliminarPersona(idPersona: number){
     const {data, error} = await supabase.rpc('p_eliminar_persona',{
@@ -86,7 +84,6 @@ static async obtenercentrosregionales() {
 
 
 
-=======
   static async obtenermotivosvisita() {
     const { data, error } = await supabase.rpc('p_motivos');
     if (error) {
@@ -95,5 +92,4 @@ static async obtenercentrosregionales() {
     }
     return data;
   }
->>>>>>> b15c77aa849009c05a43fee066721ccb6d7a58c4:src/models/persona.model.ts
 }
