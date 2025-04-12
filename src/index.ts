@@ -4,6 +4,8 @@ import cors from 'cors';
 import persona from './routes/persona.route'
 import imagen from './routes/image.route'
 import login from './routes/login.route'
+import ingresos from './routes/ingresos.route'
+
 
 dotenv.config();
 require('dotenv').config();
@@ -19,6 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/persona', persona);
 app.use('/image', imagen);
 app.use('/auth', login);
+app.use('/ingresos', ingresos);
+
 
 //Aqui esta el servidor Raiz.
 app.get('/', (req: Request, res: Response) => {
