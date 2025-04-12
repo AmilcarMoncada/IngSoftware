@@ -8,5 +8,6 @@ router.get('/por-dia', ingresoController.getIngresosPorDia);
 router.get('/por-tipo', ingresoController.getIngresosPorTipo);
 router.get('/por-centro', ingresoController.getIngresosPorCentro);
 router.get('/por-metodo', ingresoController.getIngresosPorMetodo);
+router.get('/por-carrera', ingresoController.getIngresosPorCarrera);
 
 export default router;

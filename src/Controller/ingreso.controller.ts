@@ -41,5 +41,13 @@ export const getIngresosPorMetodo = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Error al obtener ingresos por método de ingreso' });
   }
 };
-
+export const getIngresosPorCarrera = async (req: Request, res: Response) => {
+    try {
+      const resultado = await ingresoModel.getIngresosPorCarrera();
+      res.json(resultado);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error al obtener ingresos por carrera' });
+    }
+  };
  

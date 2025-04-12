@@ -1,21 +1,22 @@
-// src/models/ingresoModel.ts
 import supabase from '../utils/connection';
 
 export const getIngresosPorDia = async () => {
   const { data: ingresos, error: err1 } = await supabase
     .from('tbl_registro_ingreso')
     .select('id_persona');
-
-
   if (err1) throw err1;
 
-  const { data: estudiantes } = await supabase
+  const { data: estudiantes, error: err2 } = await supabase
     .from('tbl_estudiantes')
     .select('id_persona');
 
-  const { data: empleados } = await supabase
+  if (err2) throw err2;
+
+  const { data: empleados, error: err3 } = await supabase
     .from('tbl_empleados')
     .select('id_persona');
+
+  if (err3) throw err3;
 
   const esEstudiante = new Set(estudiantes?.map((e) => e.id_persona));
   const esEmpleado = new Set(empleados?.map((e) => e.id_persona));
@@ -49,13 +50,17 @@ export const getIngresosPorTipo = async () => {
 
   if (err1) throw err1;
 
-  const { data: estudiantes } = await supabase
+  const { data: estudiantes, error: err2 } = await supabase
     .from('tbl_estudiantes')
     .select('id_persona');
 
-  const { data: empleados } = await supabase
+  if (err2) throw err2;
+
+  const { data: empleados, error: err3 } = await supabase
     .from('tbl_empleados')
     .select('id_persona');
+
+  if (err3) throw err3;
 
   const esEstudiante = new Set(estudiantes?.map((e) => e.id_persona));
   const esEmpleado = new Set(empleados?.map((e) => e.id_persona));
@@ -89,13 +94,17 @@ export const getIngresosPorCentro = async () => {
 
   if (err1) throw err1;
 
-  const { data: estudiantes } = await supabase
+  const { data: estudiantes, error: err2 } = await supabase
     .from('tbl_estudiantes')
     .select('id_persona, id_centro_regional');
 
-  const { data: centros } = await supabase
+  if (err2) throw err2;
+
+  const { data: centros, error: err3 } = await supabase
     .from('tbl_centros_regionales')
     .select('id_centro_regional, centro_regional');
+
+  if (err3) throw err3;
 
   const mapaCentro = new Map(
     centros?.map((c) => [c.id_centro_regional, c.centro_regional])
@@ -110,8 +119,10 @@ export const getIngresosPorCentro = async () => {
   ingresos?.forEach((registro) => {
     const idCentro = mapaEstudiante.get(registro.id_persona) ?? -1; // valor por defecto
     const nombreCentro = mapaCentro.get(idCentro) || 'Desconocido';
-  
-    conteo[nombreCentro] = (conteo[nombreCentro] || 0) + 1;
+
+    if (nombreCentro !== 'Desconocido') {  // Filtramos el "Desconocido"
+      conteo[nombreCentro] = (conteo[nombreCentro] || 0) + 1;
+    }
   });
 
   return Object.entries(conteo).map(([centro_regional, cantidad_ingresos]) => ({
@@ -133,7 +144,10 @@ export const getIngresosPorMetodo = async () => {
   const conteo: Record<string, number> = {};
   data?.forEach((registro) => {
     const metodo = registro.tbl_metodos_ingreso?.metodo_ingreso || 'Desconocido';
-    conteo[metodo] = (conteo[metodo] || 0) + 1;
+
+    if (metodo !== 'Desconocido') {  // Filtramos el "Desconocido"
+      conteo[metodo] = (conteo[metodo] || 0) + 1;
+    }
   });
 
   return Object.entries(conteo).map(([metodo_ingreso, cantidad_ingresos]) => ({
@@ -141,3 +155,44 @@ export const getIngresosPorMetodo = async () => {
     cantidad_ingresos,
   }));
 };
+
+export const getIngresosPorCarrera = async () => {
+    const { data: ingresos, error: err1 } = await supabase
+      .from('tbl_registro_ingreso')
+      .select('id_persona');
+  
+    if (err1) throw err1;
+  
+    const { data: estudiantes, error: err2 } = await supabase
+      .from('tbl_estudiantes')
+      .select('id_persona, id_carrera');
+  
+    if (err2) throw err2;
+  
+    const { data: carreras, error: err3 } = await supabase
+      .from('tbl_carreras')
+      .select('id_carrera, nombre_carrera');
+  
+    if (err3) throw err3;
+  
+    const mapaCarrera = new Map(
+      carreras?.map((c) => [c.id_carrera, c.nombre_carrera])
+    );
+  
+    const conteo: Record<string, number> = {};
+  
+    ingresos?.forEach((registro) => {
+      const carreraId = estudiantes?.find((e) => e.id_persona === registro.id_persona)?.id_carrera;
+      const carreraNombre = carreraId ? mapaCarrera.get(carreraId) : null;
+  
+      if (carreraNombre) {
+        conteo[carreraNombre] = (conteo[carreraNombre] || 0) + 1;
+      }
+    });
+  
+    return Object.entries(conteo).map(([carrera, cantidad_ingresos]) => ({
+      carrera,
+      cantidad_ingresos,
+    }));
+  };
+  
