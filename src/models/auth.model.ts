@@ -49,6 +49,40 @@ export class login{
         return { success: true, message: "Sesión cerrada correctamente" };
     }
     
+    static async obtenerroles(){
+        const {data ,error} = await supabase.rpc('p_obtener_roles')
+        if (error) {
+          console.error('Error al obtener los roles :vv:', error);
+          throw new Error('Error al obtener los roles de los usuario');
+        }
+        return data;
+      }
+
+      static async obtenercentros(){
+        const {data ,error} = await supabase.rpc('p_obtener_centros')
+        if (error) {
+          console.error('Error al obtener los centros regionales :vv:', error);
+          throw new Error('Error al obtener los centros regionales');
+        }
+        return data;
+      }
+
+      static async obtenerareas(nombre_centro: string){
+        const { data, error } = await supabase.rpc('p_obtener_areas', {
+            nombre_centro: nombre_centro as unknown as never
+        });
+      
+        if (error) {
+          console.error('Error al obtener las áreas:', error);
+          throw new Error('Error al obtener las áreas');
+        }
+      
+        return data;
+      }
+      
+
+
+    /*
     static async registrarusuario(identidad: string, nombres: string, apellidos: string, rol: number, email: string, password: string) {
 
       try {
@@ -90,6 +124,70 @@ export class login{
           throw new Error('Error al realizar la operación en la base de datos.');
       }
   }  
-  
+  */
+
+ 
+
+  static async registrarusuario(identidad: string, nombre: string, apellidos: string, rol: string, centros: string, areas: string,  email: string, password: string, descriptor_facial: number[], foto: string) {
+
+    try {
+        // 1. Registrar al usuario en Supabase
+        const { data: SigUpData, error: SigUpError } = await supabase.auth.signUp({
+            email,
+            password
+        });
+
+        if (SigUpError) {
+            console.error('Error al insertar un nuevo usuario:', SigUpError);
+            throw new Error('Error al insertar un nuevo usuario');
+        }
+
+        const uuid = SigUpData.user?.id;
+        if (!uuid) {
+            throw new Error('UUID no encontrado');
+        }
+
+        const { data: PersonaData, error: PersonaError } = await supabase.rpc('p_insertar_persona', {
+          p_nombres: nombre,
+          p_apellidos: apellidos,
+          p_foto: foto,
+          p_correo: email,
+          p_dni: identidad,
+          p_descriptor_facial: descriptor_facial
+        });
+        
+        if (PersonaError) {
+            console.error('Error al insertar un nuevo usuario:', PersonaError);
+            throw new Error('Error al insertar un nuevo usuario');
+        }
+
+        if (!PersonaData || PersonaData.length === 0) {
+            throw new Error('PersonaData es nulo o vacío');
+        }
+        const personaId = PersonaData[0].id_persona;
+
+        const {data: GuardiaData, error: GuardiaError} = await supabase.rpc('p_insertar_guardia', {g_id_persona: personaId, g_centro_regional: centros, g_rol: rol, g_uuid_usuario: uuid})
+
+        if (GuardiaError) {
+            console.error('Error al insertar un nuevo usuario:', PersonaError);
+            throw new Error('Error al insertar un nuevo usuario');
+        }
+        
+        const guardiaId = GuardiaData[0].result_id_guardia;
+
+        const {data: TurnoData, error: TurnoError } = await supabase.rpc('p_insertar_turno', {t_id_guardia: guardiaId, t_area: areas});
+
+        if (TurnoError) {
+            console.error('Error al insertar un turno:', TurnoError);
+            throw new Error('Error al insertar un nuevo turno');
+        }
+        
+
+    } catch (dbError) {
+        console.error('Error de la base de datos:', dbError);
+        throw new Error('Error al realizar la operación en la base de datos.');
+    }
+}  
+
 
 }

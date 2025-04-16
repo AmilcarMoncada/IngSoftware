@@ -41,6 +41,30 @@ static async registrarpersona( nombres: string, apellidos: string, foto: string,
     }
   }
 
+  static async registraringresopersona( id_persona: number, motivo_visita: string, metodo_ingreso: string, uuid_usuario: string) {
+    try {
+      
+  
+      const { data: RegistroData, error: RegistroError } = await supabase.rpc('p_insertar_registro_ingreso', {
+        ri_id_persona: id_persona, 
+        ri_motivo_visita: motivo_visita, 
+        ri_metodo_ingreso: metodo_ingreso, 
+        ri_uuid_usuario: uuid_usuario
+      });
+  
+      if (RegistroError) {
+        console.error('Error al insertar el registro:', RegistroError);
+        throw new Error('Error al insertar el registro');
+      }
+  
+        return RegistroData;
+      } catch (dbError) {
+        const error = dbError as Error;
+        console.error('Error de la base de datos:', dbError);
+        throw new Error('Error al realizar la operación en la base de datos.');
+      }
+  }
+
 static async obtenerpersonas(){
   const {data, error} = await supabase.rpc('p_obtener_personas');
   if (error) {
@@ -92,4 +116,7 @@ static async obtenercentrosregionales() {
     }
     return data;
   }
+
+
+  
 }

@@ -39,6 +39,37 @@ export const verificarSesion = async (req: Request, res: Response): Promise<any>
     }
 };
 
+export const obtenerRoles = async (req: Request, res: Response): Promise<any> => {
+  try {
+      const resultado = await login.obtenerroles();
+      res.status(200).json(resultado);
+  } catch (error) {
+      console.error('Error obteniendo los roles:', error);
+      res.status(500).json({ message: 'Algo salió mal', error });
+  }
+};
+
+export const obtenerCentros = async (req: Request, res: Response): Promise<any> => {
+  try {
+      const resultado = await login.obtenercentros();
+      res.status(200).json(resultado);
+  } catch (error) {
+      console.error('Error obteniendo los centros regionales:', error);
+      res.status(500).json({ message: 'Algo salió mal', error });
+  }
+};
+
+export const obtenerAreas = async (req: Request, res: Response): Promise<any> => {
+  const nombre_centro = req.body.nombre_centro
+
+  try {
+      const resultado = await login.obtenerareas(nombre_centro);
+      res.status(200).json(resultado);
+  } catch (error) {
+      console.error('Error obteniendo los centros regionales:', error);
+      res.status(500).json({ message: 'Algo salió mal', error });
+  }
+};
 
 export const cerrarSesion = async (req: Request, res: Response): Promise<any> => {
     try {
@@ -51,7 +82,7 @@ export const cerrarSesion = async (req: Request, res: Response): Promise<any> =>
 };
 
 export const registrarUsuario = async (req: Request, res: Response): Promise<any> => {
-  const { identidad, nombre, apellidos, rol, email, password } = req.body;
+  const { identidad, nombre, apellidos, rol, centros, areas, email, password, descriptor_facial, foto} = req.body;
 
   if (!nombre || !apellidos || !email || !identidad) {
     return res.status(400).json({ message: 'Faltan datos requeridos en la solicitud' });
@@ -64,7 +95,7 @@ export const registrarUsuario = async (req: Request, res: Response): Promise<any
   try {
     console.log("Entró al try");
 
-    const resultado = await login.registrarusuario( identidad, nombre, apellidos, rol, email, password );
+    const resultado = await login.registrarusuario( identidad, nombre, apellidos, rol, centros, areas, email, password, descriptor_facial, foto );
 
     return res.status(200).json(resultado);
 
