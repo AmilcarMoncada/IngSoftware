@@ -1,3 +1,4 @@
+import { Console } from "console";
 import supabase from "../utils/connection";
 
 export class persona {
@@ -43,8 +44,7 @@ static async registrarpersona( nombres: string, apellidos: string, foto: string,
 
   static async registraringresopersona( id_persona: number, motivo_visita: string, metodo_ingreso: string, uuid_usuario: string) {
     try {
-      
-  
+      console.log("LLEGO AL OTRO METODO");
       const { data: RegistroData, error: RegistroError } = await supabase.rpc('p_insertar_registro_ingreso', {
         ri_id_persona: id_persona, 
         ri_motivo_visita: motivo_visita, 
@@ -58,6 +58,24 @@ static async registrarpersona( nombres: string, apellidos: string, foto: string,
       }
   
         return RegistroData;
+      } catch (dbError) {
+        const error = dbError as Error;
+        console.error('Error de la base de datos:', dbError);
+        throw new Error('Error al realizar la operación en la base de datos.');
+      }
+  }
+
+  static async verificarexisteestudiante( id_persona: number) {
+    try {
+      const { data: EstudianteData, error: EstudianteError} = await supabase.rpc('p_verificar_estudiante', {v_id_persona: id_persona});
+      console.log("LLEGO HASTA AQUI");
+
+      if (EstudianteError) {
+        console.error('Error al encontrar el estudiante:', EstudianteError);
+        throw new Error('Error al buscar el estudiante');
+      }
+
+        return EstudianteData;
       } catch (dbError) {
         const error = dbError as Error;
         console.error('Error de la base de datos:', dbError);

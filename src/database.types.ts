@@ -555,6 +555,15 @@ export type Database = {
           cuenta_econtrado: string
         }[]
       }
+      p_verificar_estudiante: {
+        Args: { v_id_persona: number }
+        Returns: {
+          numero_cuenta: string
+          nombre_carrera: string
+          centro_regional: string
+          estado: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
