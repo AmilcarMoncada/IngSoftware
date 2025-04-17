@@ -105,3 +105,14 @@ export const registrarUsuario = async (req: Request, res: Response): Promise<any
     }
   }
 };
+export const obtenerRolGuardia = async (req: Request, res: Response): Promise<any> => {
+  const {uuid_guardia} = req.body
+  
+  try {
+      const resultado = await login.obtenerrolguardia(uuid_guardia);
+      res.status(200).json(resultado);
+  } catch (error) {
+      console.error("Error en cerrarSesion:", error);
+      res.status(500).json({ success: false, message: "Error inesperado" });
+  }
+};

@@ -79,54 +79,7 @@ export class login{
       
         return data;
       }
-      
 
-
-    /*
-    static async registrarusuario(identidad: string, nombres: string, apellidos: string, rol: number, email: string, password: string) {
-
-      try {
-          // 1. Registrar al usuario en Supabase
-          const { data, error } = await supabase.auth.signUp({
-              email,
-              password,
-              options: {
-                  data: { identidad, nombres, apellidos, rol }
-              }
-          });
-          
-          if (error) {
-              console.error('Error al insertar un nuevo usuario:', error);
-              throw new Error('Error al insertar un nuevo usuario');
-          }
-  
-          // Obtener el UID del usuario recién registrado
-          const uid = data.user?.id;
-  
-          if (!uid) {
-              console.error('Error: UID no encontrado');
-              throw new Error('UID no encontrado');
-          }
-  
-          // 2. Si el registro es exitoso, llamar a la función RPC `handle_user_signup_ext` pasando el UID
-          const { error: rpcError } = await supabase.rpc('handle_user_signup_ext', { uid });
-  
-          if (rpcError) {
-              console.error('Error al ejecutar handle_user_signup_ext:', rpcError);
-              throw new Error('Error al ejecutar handle_user_signup_ext');
-          }
-  
-          // 3. Si todo está bien, devolver los datos del usuario
-          return data;
-  
-      } catch (dbError) {
-          console.error('Error de la base de datos:', dbError);
-          throw new Error('Error al realizar la operación en la base de datos.');
-      }
-  }  
-  */
-
- 
 
   static async registrarusuario(identidad: string, nombre: string, apellidos: string, rol: string, centros: string, areas: string,  email: string, password: string, descriptor_facial: number[], foto: string) {
 
@@ -173,13 +126,17 @@ export class login{
             throw new Error('Error al insertar un nuevo usuario');
         }
         
-        const guardiaId = GuardiaData[0].result_id_guardia;
+        if (!areas){
+            return;
+        } else {
+            const guardiaId = GuardiaData[0].result_id_guardia;
 
         const {data: TurnoData, error: TurnoError } = await supabase.rpc('p_insertar_turno', {t_id_guardia: guardiaId, t_area: areas});
 
         if (TurnoError) {
             console.error('Error al insertar un turno:', TurnoError);
             throw new Error('Error al insertar un nuevo turno');
+        }
         }
         
 
@@ -189,5 +146,16 @@ export class login{
     }
 }  
 
+
+static async obtenerrolguardia(uuid_guardia: string){
+    const { data, error } = await supabase.rpc('p_obtener_rol_guardia', {uuid_guardia: uuid_guardia});
+  
+    if (error) {
+      console.error('Error al obtener las áreas:', error);
+      throw new Error('Error al obtener las áreas');
+    }
+  
+    return data;
+  }
 
 }

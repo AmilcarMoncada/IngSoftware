@@ -528,6 +528,12 @@ export type Database = {
           fotografia: string
         }[]
       }
+      p_obtener_rol_guardia: {
+        Args: { uuid_guardia: string }
+        Returns: {
+          id_rol: number
+        }[]
+      }
       p_obtener_roles: {
         Args: Record<PropertyKey, never>
         Returns: {
