@@ -66,6 +66,25 @@ export const registrarPersona = async (req: Request, res: Response): Promise<any
     }
   };
 
+  export const verificarExisteEmpelado = async (req: Request, res: Response): Promise<any> => {
+
+    const { id_persona } = req.body;
+
+    if (!id_persona) {
+      res.status(400).json({ message: 'Faltan datos requeridos en la solicitud' });
+      return;
+    }
+
+    try {
+    const resultado = await persona.verificarexisteempleado(id_persona);
+      res.status(200).json(resultado);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(500).json({ message: error.message });
+      }
+    }
+  };
+
   export const obtenerPersonas = async (req: Request, res: Response): Promise<any>=> {
     try {
         const carreras = await persona.obtenerpersonas();

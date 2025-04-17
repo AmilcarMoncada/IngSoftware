@@ -67,15 +67,33 @@ static async registrarpersona( nombres: string, apellidos: string, foto: string,
 
   static async verificarexisteestudiante( id_persona: number) {
     try {
-      const { data: EstudianteData, error: EstudianteError} = await supabase.rpc('p_verificar_estudiante', {v_id_persona: id_persona});
+      const { data: EstudianteData, error: EmpleadoError} = await supabase.rpc('p_verificar_estudiante', {v_id_persona: id_persona});
       console.log("LLEGO HASTA AQUI");
 
-      if (EstudianteError) {
-        console.error('Error al encontrar el estudiante:', EstudianteError);
+      if (EmpleadoError) {
+        console.error('Error al encontrar el estudiante:', EmpleadoError);
         throw new Error('Error al buscar el estudiante');
       }
 
         return EstudianteData;
+      } catch (dbError) {
+        const error = dbError as Error;
+        console.error('Error de la base de datos:', dbError);
+        throw new Error('Error al realizar la operación en la base de datos.');
+      }
+  }
+
+  static async verificarexisteempleado( id_persona: number) {
+    try {
+      const { data: EmpleadoData, error: EmpleadoError} = await supabase.rpc('p_verificar_empleado', {v_id_persona: id_persona});
+      console.log("LLEGO HASTA AQUI");
+
+      if (EmpleadoError) {
+        console.error('Error al encontrar el empleado:', EmpleadoError);
+        throw new Error('Error al buscar el empleado');
+      }
+
+        return EmpleadoData;
       } catch (dbError) {
         const error = dbError as Error;
         console.error('Error de la base de datos:', dbError);

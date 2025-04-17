@@ -72,16 +72,19 @@ export type Database = {
         Row: {
           id_centro_regional: number
           id_persona: number
+          id_puesto_empleado: number | null
           numero_empleado: number
         }
         Insert: {
           id_centro_regional: number
           id_persona: number
+          id_puesto_empleado?: number | null
           numero_empleado?: number
         }
         Update: {
           id_centro_regional?: number
           id_persona?: number
+          id_puesto_empleado?: number | null
           numero_empleado?: number
         }
         Relationships: [
@@ -98,6 +101,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tbl_personas"
             referencedColumns: ["id_persona"]
+          },
+          {
+            foreignKeyName: "tbl_empleados_id_puesto_empleado_fkey"
+            columns: ["id_puesto_empleado"]
+            isOneToOne: false
+            referencedRelation: "tbl_puestos_empleados"
+            referencedColumns: ["id_puesto"]
           },
         ]
       }
@@ -272,6 +282,21 @@ export type Database = {
           fotografia?: string | null
           id_persona?: number
           nombres?: string
+        }
+        Relationships: []
+      }
+      tbl_puestos_empleados: {
+        Row: {
+          id_puesto: number
+          puesto: string | null
+        }
+        Insert: {
+          id_puesto?: number
+          puesto?: string | null
+        }
+        Update: {
+          id_puesto?: number
+          puesto?: string | null
         }
         Relationships: []
       }
@@ -553,6 +578,14 @@ export type Database = {
         Args: { p_numero_cuenta: string }
         Returns: {
           cuenta_econtrado: string
+        }[]
+      }
+      p_verificar_empleado: {
+        Args: { v_id_persona: number }
+        Returns: {
+          numero_empleado: string
+          puesto: string
+          centro_regional: string
         }[]
       }
       p_verificar_estudiante: {
