@@ -1,5 +1,5 @@
 import express from 'express';
-import { registrarPersona, obtenerCarreras, obtenerCentrosRegionales, obtenerPersonas, obtenerMotivosVisita, registrarIngresoPersona, verificarExisteEstudiante, verificarExisteEmpelado } from '../Controller/persona.controller';
+import { registrarPersona, obtenerCarreras, obtenerCentrosRegionales, obtenerPersonas, obtenerMotivosVisita, registrarIngresoPersona, verificarExisteEstudiante, verificarExisteEmpelado, buscarEstudiantePorCuenta, buscarPersonaPorDni  } from '../Controller/persona.controller';
 
 const router = express.Router();
 
@@ -11,5 +11,6 @@ router.get('/obtener', obtenerPersonas);
 router.get('/carreras', obtenerCarreras);
 router.get('/centros', obtenerCentrosRegionales);
 router.get('/motivos', obtenerMotivosVisita);
-
+router.get('/buscarEstudiante', buscarEstudiantePorCuenta);
+router.get('/buscarPorDni', buscarPersonaPorDni);
 export default router;

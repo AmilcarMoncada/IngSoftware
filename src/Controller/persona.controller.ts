@@ -130,3 +130,42 @@ export const obtenerMotivosVisita = async (req: Request, res: Response): Promise
   }
   }
 };
+export const buscarEstudiantePorCuenta = async (req: Request, res: Response): Promise<any> => {
+  const { numeroCuenta } = req.query;
+
+  console.log("Número de cuenta recibido:", numeroCuenta); // Verificar que el parámetro esté llegando
+
+  if (!numeroCuenta || typeof numeroCuenta !== 'string') {
+    res.status(400).json({ message: 'El número de cuenta es requerido.' });
+    return;
+  }
+
+  try {
+    const resultado = await persona.buscarestudianteporcuenta(numeroCuenta);
+    res.status(200).json(resultado);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+};
+
+
+export const buscarPersonaPorDni = async (req: Request, res: Response): Promise<any> => {
+  const { dni } = req.query;
+
+  if (!dni || typeof dni !== 'string') {
+    res.status(400).json({ message: 'El número de identidad (DNI) es requerido.' });
+    return;
+  }
+
+  try {
+    const resultado = await persona.buscarpersonapordni(dni);
+    res.status(200).json(resultado);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+};
+

@@ -152,7 +152,44 @@ static async obtenercentrosregionales() {
     }
     return data;
   }
-
+  static async buscarestudianteporcuenta(numeroCuenta: string) {
+    try {
+      const { data, error } = await supabase.rpc('buscar_estudiante_por_cuenta', {
+        p_numero_cuenta: numeroCuenta
+      });
+  
+      if (error) {
+        console.error('Error al buscar estudiante por número de cuenta:', error);
+        throw new Error('Error al buscar estudiante por número de cuenta.');
+      }
+  
+      return data;
+    } catch (dbError) {
+      const error = dbError as Error;
+      console.error('Error de la base de datos:', dbError);
+      throw new Error('Error al realizar la operación en la base de datos.');
+    }
+  }
+  
+  static async buscarpersonapordni(dni: string) {
+    try {
+      const { data, error } = await supabase.rpc('buscar_persona_por_dni', {
+        p_dni: dni
+      });
+  
+      if (error) {
+        console.error('Error al buscar persona por DNI:', error);
+        throw new Error('Error al buscar persona por DNI.');
+      }
+  
+      return data;
+    } catch (dbError) {
+      const error = dbError as Error;
+      console.error('Error de la base de datos:', dbError);
+      throw new Error('Error al realizar la operación en la base de datos.');
+    }
+  }
+  
 
   
 }
