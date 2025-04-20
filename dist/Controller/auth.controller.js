@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registrarUsuario = exports.cerrarSesion = exports.verificarSesion = exports.iniciarSesion = void 0;
+exports.obtenerRolGuardia = exports.registrarUsuario = exports.cerrarSesion = exports.obtenerAreas = exports.obtenerCentros = exports.obtenerRoles = exports.verificarSesion = exports.iniciarSesion = void 0;
 const auth_model_1 = require("../models/auth.model");
 const email_validator_1 = __importDefault(require("email-validator"));
 const iniciarSesion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -49,6 +49,40 @@ const verificarSesion = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.verificarSesion = verificarSesion;
+const obtenerRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const resultado = yield auth_model_1.login.obtenerroles();
+        res.status(200).json(resultado);
+    }
+    catch (error) {
+        console.error('Error obteniendo los roles:', error);
+        res.status(500).json({ message: 'Algo salió mal', error });
+    }
+});
+exports.obtenerRoles = obtenerRoles;
+const obtenerCentros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const resultado = yield auth_model_1.login.obtenercentros();
+        res.status(200).json(resultado);
+    }
+    catch (error) {
+        console.error('Error obteniendo los centros regionales:', error);
+        res.status(500).json({ message: 'Algo salió mal', error });
+    }
+});
+exports.obtenerCentros = obtenerCentros;
+const obtenerAreas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const nombre_centro = req.body.nombre_centro;
+    try {
+        const resultado = yield auth_model_1.login.obtenerareas(nombre_centro);
+        res.status(200).json(resultado);
+    }
+    catch (error) {
+        console.error('Error obteniendo los centros regionales:', error);
+        res.status(500).json({ message: 'Algo salió mal', error });
+    }
+});
+exports.obtenerAreas = obtenerAreas;
 const cerrarSesion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const resultado = yield auth_model_1.login.cerrarsesion();
@@ -61,7 +95,7 @@ const cerrarSesion = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.cerrarSesion = cerrarSesion;
 const registrarUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { identidad, nombre, apellidos, rol, email, password } = req.body;
+    const { identidad, nombre, apellidos, rol, centros, areas, email, password, descriptor_facial, foto } = req.body;
     if (!nombre || !apellidos || !email || !identidad) {
         return res.status(400).json({ message: 'Faltan datos requeridos en la solicitud' });
     }
@@ -70,7 +104,7 @@ const registrarUsuario = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
     try {
         console.log("Entró al try");
-        const resultado = yield auth_model_1.login.registrarusuario(identidad, nombre, apellidos, rol, email, password);
+        const resultado = yield auth_model_1.login.registrarusuario(identidad, nombre, apellidos, rol, centros, areas, email, password, descriptor_facial, foto);
         return res.status(200).json(resultado);
     }
     catch (error) {
@@ -80,3 +114,15 @@ const registrarUsuario = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.registrarUsuario = registrarUsuario;
+const obtenerRolGuardia = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { uuid_guardia } = req.body;
+    try {
+        const resultado = yield auth_model_1.login.obtenerrolguardia(uuid_guardia);
+        res.status(200).json(resultado);
+    }
+    catch (error) {
+        console.error("Error en cerrarSesion:", error);
+        res.status(500).json({ success: false, message: "Error inesperado" });
+    }
+});
+exports.obtenerRolGuardia = obtenerRolGuardia;
