@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.obtenerRolGuardia = exports.registrarUsuario = exports.cerrarSesion = exports.obtenerAreas = exports.obtenerCentros = exports.obtenerRoles = exports.verificarSesion = exports.iniciarSesion = void 0;
+exports.obtenerDatosGuardia = exports.obtenerRolGuardia = exports.registrarUsuario = exports.cerrarSesion = exports.obtenerAreas = exports.obtenerCentros = exports.obtenerRoles = exports.verificarSesion = exports.iniciarSesion = void 0;
 const auth_model_1 = require("../models/auth.model");
 const email_validator_1 = __importDefault(require("email-validator"));
 const iniciarSesion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -126,3 +126,15 @@ const obtenerRolGuardia = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.obtenerRolGuardia = obtenerRolGuardia;
+const obtenerDatosGuardia = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { uuid_guardia } = req.body;
+    try {
+        const resultado = yield auth_model_1.login.obtenerdatosguardia(uuid_guardia);
+        res.status(200).json(resultado);
+    }
+    catch (error) {
+        console.error("Error en cerrarSesion:", error);
+        res.status(500).json({ success: false, message: "Error inesperado" });
+    }
+});
+exports.obtenerDatosGuardia = obtenerDatosGuardia;

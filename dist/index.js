@@ -13,8 +13,11 @@ const ingresos_route_1 = __importDefault(require("./routes/ingresos.route"));
 dotenv_1.default.config();
 require('dotenv').config();
 const app = (0, express_1.default)();
-const port = process.env.PORT;
-app.use((0, cors_1.default)());
+const port = process.env.PORT || 3000;
+app.use((0, cors_1.default)({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 //rutas
@@ -27,6 +30,6 @@ app.get('/', (req, res) => {
     res.send('Servidor funcionando ');
 });
 //Mensaje de consola para saber que el servidor funciona.
-app.listen(port, () => {
+app.listen(3000, '0.0.0.0', () => {
     console.log(`Servidor corriendo en el puerto: ${port}`);
 });

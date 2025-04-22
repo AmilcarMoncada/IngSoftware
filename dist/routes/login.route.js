@@ -14,4 +14,5 @@ router.get('/roles', auth_controller_1.obtenerRoles);
 router.get('/centros', auth_controller_1.obtenerCentros);
 router.post('/areas', auth_controller_1.obtenerAreas);
 router.post('/rol', auth_controller_1.obtenerRolGuardia);
+router.post('/guardia', auth_controller_1.obtenerDatosGuardia);
 exports.default = router;

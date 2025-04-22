@@ -157,5 +157,15 @@ class login {
             return data;
         });
     }
+    static obtenerdatosguardia(uuid_guardia) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data, error } = yield connection_1.default.rpc('p_obtener_datos_guardia', { uuid_guardia: uuid_guardia });
+            if (error) {
+                console.error('Error al obtener las áreas:', error);
+                throw new Error('Error al obtener las áreas');
+            }
+            return data;
+        });
+    }
 }
 exports.login = login;
