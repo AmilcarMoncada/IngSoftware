@@ -11,7 +11,7 @@ router.get('/roles', obtenerRoles);
 router.get('/centros', obtenerCentros);
 router.post('/areas', obtenerAreas);
 router.post('/rol', obtenerRolGuardia);
-router.post('/guardia', obtenerDatosGuardia);
+router.get('/guardia', obtenerDatosGuardia);
 
 
 
