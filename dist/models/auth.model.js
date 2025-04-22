@@ -59,41 +59,102 @@ class login {
             return { success: true, message: "Sesión cerrada correctamente" };
         });
     }
-    static registrarusuario(identidad, nombres, apellidos, rol, email, password) {
+    static obtenerroles() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data, error } = yield connection_1.default.rpc('p_obtener_roles');
+            if (error) {
+                console.error('Error al obtener los roles :vv:', error);
+                throw new Error('Error al obtener los roles de los usuario');
+            }
+            return data;
+        });
+    }
+    static obtenercentros() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data, error } = yield connection_1.default.rpc('p_obtener_centros');
+            if (error) {
+                console.error('Error al obtener los centros regionales :vv:', error);
+                throw new Error('Error al obtener los centros regionales');
+            }
+            return data;
+        });
+    }
+    static obtenerareas(nombre_centro) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data, error } = yield connection_1.default.rpc('p_obtener_areas', {
+                nombre_centro: nombre_centro
+            });
+            if (error) {
+                console.error('Error al obtener las áreas:', error);
+                throw new Error('Error al obtener las áreas');
+            }
+            return data;
+        });
+    }
+    static registrarusuario(identidad, nombre, apellidos, rol, centros, areas, email, password, descriptor_facial, foto) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
                 // 1. Registrar al usuario en Supabase
-                const { data, error } = yield connection_1.default.auth.signUp({
+                const { data: SigUpData, error: SigUpError } = yield connection_1.default.auth.signUp({
                     email,
-                    password,
-                    options: {
-                        data: { identidad, nombres, apellidos, rol }
-                    }
+                    password
                 });
-                if (error) {
-                    console.error('Error al insertar un nuevo usuario:', error);
+                if (SigUpError) {
+                    console.error('Error al insertar un nuevo usuario:', SigUpError);
                     throw new Error('Error al insertar un nuevo usuario');
                 }
-                // Obtener el UID del usuario recién registrado
-                const uid = (_a = data.user) === null || _a === void 0 ? void 0 : _a.id;
-                if (!uid) {
-                    console.error('Error: UID no encontrado');
-                    throw new Error('UID no encontrado');
+                const uuid = (_a = SigUpData.user) === null || _a === void 0 ? void 0 : _a.id;
+                if (!uuid) {
+                    throw new Error('UUID no encontrado');
                 }
-                // 2. Si el registro es exitoso, llamar a la función RPC `handle_user_signup_ext` pasando el UID
-                const { error: rpcError } = yield connection_1.default.rpc('handle_user_signup_ext', { uid });
-                if (rpcError) {
-                    console.error('Error al ejecutar handle_user_signup_ext:', rpcError);
-                    throw new Error('Error al ejecutar handle_user_signup_ext');
+                const { data: PersonaData, error: PersonaError } = yield connection_1.default.rpc('p_insertar_persona', {
+                    p_nombres: nombre,
+                    p_apellidos: apellidos,
+                    p_foto: foto,
+                    p_correo: email,
+                    p_dni: identidad,
+                    p_descriptor_facial: descriptor_facial
+                });
+                if (PersonaError) {
+                    console.error('Error al insertar un nuevo usuario:', PersonaError);
+                    throw new Error('Error al insertar un nuevo usuario');
                 }
-                // 3. Si todo está bien, devolver los datos del usuario
-                return data;
+                if (!PersonaData || PersonaData.length === 0) {
+                    throw new Error('PersonaData es nulo o vacío');
+                }
+                const personaId = PersonaData[0].id_persona;
+                const { data: GuardiaData, error: GuardiaError } = yield connection_1.default.rpc('p_insertar_guardia', { g_id_persona: personaId, g_centro_regional: centros, g_rol: rol, g_uuid_usuario: uuid });
+                if (GuardiaError) {
+                    console.error('Error al insertar un nuevo usuario:', PersonaError);
+                    throw new Error('Error al insertar un nuevo usuario');
+                }
+                if (!areas) {
+                    return;
+                }
+                else {
+                    const guardiaId = GuardiaData[0].result_id_guardia;
+                    const { data: TurnoData, error: TurnoError } = yield connection_1.default.rpc('p_insertar_turno', { t_id_guardia: guardiaId, t_area: areas });
+                    if (TurnoError) {
+                        console.error('Error al insertar un turno:', TurnoError);
+                        throw new Error('Error al insertar un nuevo turno');
+                    }
+                }
             }
             catch (dbError) {
                 console.error('Error de la base de datos:', dbError);
                 throw new Error('Error al realizar la operación en la base de datos.');
             }
+        });
+    }
+    static obtenerrolguardia(uuid_guardia) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data, error } = yield connection_1.default.rpc('p_obtener_rol_guardia', { uuid_guardia: uuid_guardia });
+            if (error) {
+                console.error('Error al obtener las áreas:', error);
+                throw new Error('Error al obtener las áreas');
+            }
+            return data;
         });
     }
 }
