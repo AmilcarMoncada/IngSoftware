@@ -10,7 +10,8 @@ import ingresos from './routes/ingresos.route'
 dotenv.config();
 require('dotenv').config();
 const app: Express = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
+
 
 app.use(cors({
     origin:'https://ing-software-ing-software-2025.vercel.app',

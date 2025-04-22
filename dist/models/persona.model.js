@@ -51,6 +51,65 @@ class persona {
             }
         });
     }
+    static registraringresopersona(id_persona, motivo_visita, metodo_ingreso, uuid_usuario) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log("LLEGO AL OTRO METODO");
+                const { data: RegistroData, error: RegistroError } = yield connection_1.default.rpc('p_insertar_registro_ingreso', {
+                    ri_id_persona: id_persona,
+                    ri_motivo_visita: motivo_visita,
+                    ri_metodo_ingreso: metodo_ingreso,
+                    ri_uuid_usuario: uuid_usuario
+                });
+                if (RegistroError) {
+                    console.error('Error al insertar el registro:', RegistroError);
+                    throw new Error('Error al insertar el registro');
+                }
+                return RegistroData;
+            }
+            catch (dbError) {
+                const error = dbError;
+                console.error('Error de la base de datos:', dbError);
+                throw new Error('Error al realizar la operación en la base de datos.');
+            }
+        });
+    }
+    static verificarexisteestudiante(id_persona) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { data: EstudianteData, error: EmpleadoError } = yield connection_1.default.rpc('p_verificar_estudiante', { v_id_persona: id_persona });
+                console.log("LLEGO HASTA AQUI");
+                if (EmpleadoError) {
+                    console.error('Error al encontrar el estudiante:', EmpleadoError);
+                    throw new Error('Error al buscar el estudiante');
+                }
+                return EstudianteData;
+            }
+            catch (dbError) {
+                const error = dbError;
+                console.error('Error de la base de datos:', dbError);
+                throw new Error('Error al realizar la operación en la base de datos.');
+            }
+        });
+    }
+    static verificarexisteempleado(id_persona) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { data: EmpleadoData, error: EmpleadoError } = yield connection_1.default.rpc('p_verificar_empleado', { v_id_persona: id_persona });
+                console.log("LLEGO HASTA AQUI");
+                if (EmpleadoError) {
+                    console.error('Error al encontrar el empleado:', EmpleadoError);
+                    throw new Error('Error al buscar el empleado');
+                }
+                return EmpleadoData;
+            }
+            catch (dbError) {
+                const error = dbError;
+                console.error('Error de la base de datos:', dbError);
+                throw new Error('Error al realizar la operación en la base de datos.');
+            }
+        });
+    }
     static obtenerpersonas() {
         return __awaiter(this, void 0, void 0, function* () {
             const { data, error } = yield connection_1.default.rpc('p_obtener_personas');
@@ -101,6 +160,44 @@ class persona {
                 throw new Error('Error al obtener los motivos de visita');
             }
             return data;
+        });
+    }
+    static buscarestudianteporcuenta(numeroCuenta) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { data, error } = yield connection_1.default.rpc('buscar_estudiante_por_cuenta', {
+                    p_numero_cuenta: numeroCuenta
+                });
+                if (error) {
+                    console.error('Error al buscar estudiante por número de cuenta:', error);
+                    throw new Error('Error al buscar estudiante por número de cuenta.');
+                }
+                return data;
+            }
+            catch (dbError) {
+                const error = dbError;
+                console.error('Error de la base de datos:', dbError);
+                throw new Error('Error al realizar la operación en la base de datos.');
+            }
+        });
+    }
+    static buscarpersonapordni(dni) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { data, error } = yield connection_1.default.rpc('buscar_persona_por_dni', {
+                    p_dni: dni
+                });
+                if (error) {
+                    console.error('Error al buscar persona por DNI:', error);
+                    throw new Error('Error al buscar persona por DNI.');
+                }
+                return data;
+            }
+            catch (dbError) {
+                const error = dbError;
+                console.error('Error de la base de datos:', dbError);
+                throw new Error('Error al realizar la operación en la base de datos.');
+            }
         });
     }
 }

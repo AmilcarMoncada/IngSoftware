@@ -10,4 +10,8 @@ router.post('/login', auth_controller_1.iniciarSesion);
 router.get('/verificarLogin', auth_controller_1.verificarSesion);
 router.post('/logout', auth_controller_1.cerrarSesion);
 router.post('/signup', auth_controller_1.registrarUsuario);
+router.get('/roles', auth_controller_1.obtenerRoles);
+router.get('/centros', auth_controller_1.obtenerCentros);
+router.post('/areas', auth_controller_1.obtenerAreas);
+router.post('/rol', auth_controller_1.obtenerRolGuardia);
 exports.default = router;
