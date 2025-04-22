@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 
 
 app.use(cors({
-    origin:'https://ing-software-ing-software-2025.vercel.app',
+    origin:'*',
     methods:['GET', 'POST', 'PUT', 'DELETE']
 }));
 app.use(express.json());
