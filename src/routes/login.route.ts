@@ -1,5 +1,5 @@
 import express from 'express';
-import { iniciarSesion, verificarSesion, cerrarSesion, registrarUsuario, obtenerRoles, obtenerCentros, obtenerAreas, obtenerRolGuardia } from '../Controller/auth.controller';
+import { iniciarSesion, verificarSesion, cerrarSesion, registrarUsuario, obtenerRoles, obtenerCentros, obtenerAreas, obtenerRolGuardia, obtenerDatosGuardia } from '../Controller/auth.controller';
 
 const router = express.Router();
 
@@ -11,6 +11,7 @@ router.get('/roles', obtenerRoles);
 router.get('/centros', obtenerCentros);
 router.post('/areas', obtenerAreas);
 router.post('/rol', obtenerRolGuardia);
+router.post('/guardia', obtenerDatosGuardia);
 
 
 

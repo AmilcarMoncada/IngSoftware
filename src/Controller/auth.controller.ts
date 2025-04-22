@@ -116,3 +116,15 @@ export const obtenerRolGuardia = async (req: Request, res: Response): Promise<an
       res.status(500).json({ success: false, message: "Error inesperado" });
   }
 };
+
+export const obtenerDatosGuardia = async (req: Request, res: Response): Promise<any> => {
+  const {uuid_guardia} = req.body
+  
+  try {
+      const resultado = await login.obtenerdatosguardia(uuid_guardia);
+      res.status(200).json(resultado);
+  } catch (error) {
+      console.error("Error en cerrarSesion:", error);
+      res.status(500).json({ success: false, message: "Error inesperado" });
+  }
+};

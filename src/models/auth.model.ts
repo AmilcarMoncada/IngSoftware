@@ -158,4 +158,18 @@ static async obtenerrolguardia(uuid_guardia: string){
     return data;
   }
 
+
+  static async obtenerdatosguardia(uuid_guardia: string){
+    const { data, error } = await supabase.rpc('p_obtener_datos_guardia', {uuid_guardia: uuid_guardia});
+  
+    if (error) {
+      console.error('Error al obtener las áreas:', error);
+      throw new Error('Error al obtener las áreas');
+    }
+  
+    return data;
+  }
+
 }
+
+
