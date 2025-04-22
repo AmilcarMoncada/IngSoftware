@@ -12,7 +12,10 @@ require('dotenv').config();
 const app: Express = express();
 const port = process.env.PORT;
 
-app.use(cors());
+app.use(cors({
+    origin:'https://ing-software-ing-software-2025.vercel.app',
+    methods:['GET', 'POST', 'PUT', 'DELETE']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -30,6 +33,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 //Mensaje de consola para saber que el servidor funciona.
-app.listen(port, () => {
+app.listen(3000 , '0.0.0.0', () => {
     console.log(`Servidor corriendo en el puerto: ${port}`);
 });
