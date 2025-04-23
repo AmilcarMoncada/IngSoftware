@@ -171,7 +171,7 @@ export const buscarPersonaPorDni = async (req: Request, res: Response): Promise<
 
 export const buscarPersonaPorNumeroEmpleado = async (req: Request, res: Response): Promise<any> => {
   const { numeroEmpleado } = req.query;
-
+  console.log("Número de empleado recibido:", numeroEmpleado); // Verificar que el parámetro esté llegando
   // Verificar si el número de empleado es un número
   if (!numeroEmpleado || isNaN(Number(numeroEmpleado))) {
     res.status(400).json({ message: 'El número de empleado debe ser un valor numérico.' });
