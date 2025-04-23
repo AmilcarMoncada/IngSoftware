@@ -169,3 +169,20 @@ export const buscarPersonaPorDni = async (req: Request, res: Response): Promise<
   }
 };
 
+export const buscarPersonaPorNumeroEmpleado = async (req: Request, res: Response): Promise<any> => {
+  const { numeroEmpleado } = req.query;
+
+  if (!numeroEmpleado || typeof numeroEmpleado !== 'string') {
+    res.status(400).json({ message: 'El número de empleado es requerido.' });
+    return;
+  }
+
+  try {
+    const resultado = await persona.buscarpersonaporempleado(numeroEmpleado);
+    res.status(200).json(resultado);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+};
