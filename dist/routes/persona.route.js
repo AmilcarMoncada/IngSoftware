@@ -16,4 +16,5 @@ router.get('/centros', persona_controller_1.obtenerCentrosRegionales);
 router.get('/motivos', persona_controller_1.obtenerMotivosVisita);
 router.get('/buscarEstudiante', persona_controller_1.buscarEstudiantePorCuenta);
 router.get('/buscarPorDni', persona_controller_1.buscarPersonaPorDni);
+router.get('/buscarPorNumeroEmpleado', persona_controller_1.buscarPersonaPorNumeroEmpleado);
 exports.default = router;

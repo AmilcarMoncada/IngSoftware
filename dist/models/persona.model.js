@@ -200,5 +200,24 @@ class persona {
             }
         });
     }
+    static buscarpersonaporempleado(numeroEmpleado) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { data, error } = yield connection_1.default.rpc('buscar_persona_por_numero_empleado', {
+                    p_numero_empleado: numeroEmpleado
+                });
+                if (error) {
+                    console.error('Error al buscar persona por número de empleado:', error);
+                    throw new Error('Error al buscar persona por número de empleado.');
+                }
+                return data;
+            }
+            catch (dbError) {
+                const error = dbError;
+                console.error('Error de la base de datos:', dbError);
+                throw new Error('Error al realizar la operación en la base de datos.');
+            }
+        });
+    }
 }
 exports.persona = persona;
