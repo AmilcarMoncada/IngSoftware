@@ -193,3 +193,4 @@ const buscarPersonaPorNumeroEmpleado = (req, res) => __awaiter(void 0, void 0, v
     }
 });
 exports.buscarPersonaPorNumeroEmpleado = buscarPersonaPorNumeroEmpleado;
+//Comentario de prueba
