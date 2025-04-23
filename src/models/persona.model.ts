@@ -189,24 +189,25 @@ static async obtenercentrosregionales() {
       throw new Error('Error al realizar la operación en la base de datos.');
     }
   }
-  static async buscarpersonaporempleado(numeroEmpleado: string) {
+  static async buscarpersonaporempleado(numeroEmpleado: number) {
     try {
-      const { data, error } = await supabase.rpc('buscar_persona_por_numero_empleado', {
-        p_numero_empleado: numeroEmpleado
-      });
+        const { data, error } = await supabase.rpc('buscar_persona_por_numero_empleado', {
+            p_numero_empleado: numeroEmpleado
+        });
   
-      if (error) {
-        console.error('Error al buscar persona por número de empleado:', error);
-        throw new Error('Error al buscar persona por número de empleado.');
-      }
+        if (error) {
+            console.error('Error al buscar persona por número de empleado:', error);
+            throw new Error('Error al buscar persona por número de empleado.');
+        }
   
-      return data;
+        return data;
     } catch (dbError) {
-      const error = dbError as Error;
-      console.error('Error de la base de datos:', dbError);
-      throw new Error('Error al realizar la operación en la base de datos.');
+        const error = dbError as Error;
+        console.error('Error de la base de datos:', dbError);
+        throw new Error('Error al realizar la operación en la base de datos.');
     }
-  }
+}
+
   
   
 }

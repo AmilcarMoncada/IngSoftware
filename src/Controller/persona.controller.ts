@@ -172,13 +172,17 @@ export const buscarPersonaPorDni = async (req: Request, res: Response): Promise<
 export const buscarPersonaPorNumeroEmpleado = async (req: Request, res: Response): Promise<any> => {
   const { numeroEmpleado } = req.query;
 
-  if (!numeroEmpleado || typeof numeroEmpleado !== 'string') {
-    res.status(400).json({ message: 'El número de empleado es requerido.' });
+  // Verificar si el número de empleado es un número
+  if (!numeroEmpleado || isNaN(Number(numeroEmpleado))) {
+    res.status(400).json({ message: 'El número de empleado debe ser un valor numérico.' });
     return;
   }
 
+  // Convertir numeroEmpleado a número
+  const numeroEmpleadoInt = parseInt(numeroEmpleado as string, 10);
+
   try {
-    const resultado = await persona.buscarpersonaporempleado(numeroEmpleado);
+    const resultado = await persona.buscarpersonaporempleado(numeroEmpleadoInt); // Pasar número entero
     res.status(200).json(resultado);
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -186,3 +190,4 @@ export const buscarPersonaPorNumeroEmpleado = async (req: Request, res: Response
     }
   }
 };
+

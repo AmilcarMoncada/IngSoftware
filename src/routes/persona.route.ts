@@ -13,6 +13,6 @@ router.get('/centros', obtenerCentrosRegionales);
 router.get('/motivos', obtenerMotivosVisita);
 router.get('/buscarEstudiante', buscarEstudiantePorCuenta);
 router.get('/buscarPorDni', buscarPersonaPorDni);
-router.get('/buscarPorEmpleado', buscarPersonaPorNumeroEmpleado);
+router.get('/buscarPorNumeroEmpleado', buscarPersonaPorNumeroEmpleado);
 
 export default router;
